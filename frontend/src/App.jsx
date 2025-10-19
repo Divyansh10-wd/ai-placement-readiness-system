@@ -7,6 +7,8 @@ import Problems from './pages/Problems.jsx'
 import ProblemDetails from './pages/ProblemDetails.jsx'
 import PublishProblem from './pages/PublishProblem.jsx'
 import Dashboard from './pages/Dashboard.jsx'
+import AIInterview from './pages/AIInterview.jsx'
+import InterviewReport from './pages/InterviewReport.jsx'
 import { useAuth } from './context/AuthContext.jsx'
 
 function ProtectedRoute({ children }) {
@@ -39,6 +41,22 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ai-interview"
+            element={
+              <ProtectedRoute>
+                <AIInterview />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/interview-report"
+            element={
+              <ProtectedRoute>
+                <InterviewReport />
               </ProtectedRoute>
             }
           />

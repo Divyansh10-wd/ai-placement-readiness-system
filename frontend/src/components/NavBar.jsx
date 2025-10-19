@@ -49,11 +49,10 @@ export default function NavBar() {
               <LayoutDashboard className="w-4 h-4" />
               <span>Dashboard</span>
             </NavLink>
-            <button disabled className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">
+            <NavLink to="/ai-interview" className={linkClass}>
               <MessageSquare className="w-4 h-4" />
               <span>AI Interview</span>
-              <span className="text-xs bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-full font-semibold ml-1">Soon</span>
-            </button>
+            </NavLink>
             <button disabled className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">
               <FileText className="w-4 h-4" />
               <span>Resume Maker</span>
