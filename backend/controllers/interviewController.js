@@ -1,9 +1,56 @@
 const Interview = require('../models/Interview');
 const OpenAI = require('openai');
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+const axios = require('axios');
+
+// Configure multer for audio file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = path.join(__dirname, '../uploads/audio');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB limit
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ['audio/webm', 'audio/wav', 'audio/mp3', 'audio/mpeg', 'audio/ogg'];
+    if (allowedTypes.includes(file.mimetype) || file.mimetype.startsWith('audio/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only audio files are allowed.'));
+    }
+  }
+});
+
+exports.uploadAudio = upload;
 
 // Initialize OpenAI client
 const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
+
+// Debug: Log OpenAI initialization status
+if (openai) {
+  console.log('✅ OpenAI API initialized successfully');
+} else {
+  console.log('⚠️ OpenAI API key not found - using fallback mode');
+}
+
+// Debug: Log ElevenLabs initialization status
+if (process.env.ELEVENLABS_API_KEY) {
+  console.log('✅ ElevenLabs API key configured');
+} else {
+  console.log('⚠️ ElevenLabs API key not found');
+}
 
 // Question banks for fallback - Organized by specialization
 const QUESTION_BANKS = {
@@ -1074,5 +1121,104 @@ exports.getInterviewDetails = async (req, res) => {
     res.json(interview);
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch interview', error: error.message });
+  }
+};
+
+// Speech-to-Text: Convert audio to text
+exports.speechToText = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No audio file provided' });
+    }
+
+    if (!openai) {
+      return res.status(503).json({ message: 'OpenAI API not configured' });
+    }
+
+    const audioFilePath = req.file.path;
+    console.log('Processing audio file:', audioFilePath);
+
+    // Use OpenAI Whisper API for transcription
+    const transcription = await openai.audio.transcriptions.create({
+      file: fs.createReadStream(audioFilePath),
+      model: 'whisper-1',
+      language: 'en'
+    });
+
+    // Clean up the uploaded file
+    fs.unlinkSync(audioFilePath);
+
+    res.json({
+      text: transcription.text,
+      success: true
+    });
+  } catch (error) {
+    console.error('Speech-to-text error:', error);
+    // Clean up file on error
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    res.status(500).json({ 
+      message: 'Failed to transcribe audio', 
+      error: error.message 
+    });
+  }
+};
+
+// Text-to-Speech: Convert text to audio using ElevenLabs
+exports.textToSpeech = async (req, res) => {
+  try {
+    const { text } = req.body;
+
+    if (!text) {
+      return res.status(400).json({ message: 'No text provided' });
+    }
+
+    const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
+    
+    if (!ELEVENLABS_API_KEY) {
+      return res.status(503).json({ message: 'ElevenLabs API not configured' });
+    }
+
+    console.log('Converting text to speech with ElevenLabs:', text.substring(0, 50) + '...');
+
+    // ElevenLabs voice ID (Rachel - natural female voice)
+    // You can find more voices at: https://api.elevenlabs.io/v1/voices
+    const VOICE_ID = '21m00Tcm4TlvDq8ikWAM'; // Rachel voice
+
+    // Call ElevenLabs API
+    const response = await axios({
+      method: 'post',
+      url: `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
+      headers: {
+        'Accept': 'audio/mpeg',
+        'xi-api-key': ELEVENLABS_API_KEY,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        text: text,
+        model_id: 'eleven_monolingual_v1',
+        voice_settings: {
+          stability: 0.5,
+          similarity_boost: 0.5
+        }
+      },
+      responseType: 'arraybuffer'
+    });
+
+    // Set headers for audio streaming
+    res.set({
+      'Content-Type': 'audio/mpeg',
+      'Content-Length': response.data.length,
+      'Cache-Control': 'no-cache'
+    });
+
+    res.send(Buffer.from(response.data));
+  } catch (error) {
+    console.error('ElevenLabs TTS error:', error.response?.data || error.message);
+    res.status(500).json({ 
+      message: 'Failed to generate speech', 
+      error: error.message 
+    });
   }
 };

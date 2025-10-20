@@ -6,7 +6,10 @@ const {
   submitAnswer,
   completeInterview,
   getInterviewHistory,
-  getInterviewDetails
+  getInterviewDetails,
+  speechToText,
+  textToSpeech,
+  uploadAudio
 } = require('../controllers/interviewController');
 
 // Start new interview (protected)
@@ -23,5 +26,12 @@ router.get('/history', protect, getInterviewHistory);
 
 // Get specific interview details (protected)
 router.get('/:interviewId', protect, getInterviewDetails);
+
+// Voice-to-Voice routes
+// Speech-to-Text: Upload audio and get transcription (protected)
+router.post('/speech-to-text', protect, uploadAudio.single('audio'), speechToText);
+
+// Text-to-Speech: Convert text to audio (protected)
+router.post('/text-to-speech', protect, textToSpeech);
 
 module.exports = router;

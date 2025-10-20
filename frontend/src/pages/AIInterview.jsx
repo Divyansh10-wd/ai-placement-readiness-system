@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mic, MicOff, Send, Play, Square, Trophy, Clock, MessageSquare, Brain, Sparkles } from 'lucide-react';
+import { Mic, MicOff, Send, Play, Square, Trophy, Clock, MessageSquare, Brain, Sparkles, Volume2, VolumeX, Loader } from 'lucide-react';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useBrowserSpeechRecognition } from '../hooks/useBrowserSpeechRecognition';
 
 export default function AIInterview() {
   const { user } = useAuth();
@@ -30,8 +31,13 @@ export default function AIInterview() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const timerRef = useRef(null);
   
-  // Voice recording (placeholder for future implementation)
-  const [isRecording, setIsRecording] = useState(false);
+  // Browser-based speech recognition (FREE)
+  const { isListening, transcript, error: voiceError, isSupported, startListening, stopListening, resetTranscript } = useBrowserSpeechRecognition();
+  const [useBrowserSpeech, setUseBrowserSpeech] = useState(true); // Toggle for browser speech
+  
+  // Audio playback for questions (ElevenLabs)
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const audioRef = useRef(null);
 
   // Start timer when interview begins
   useEffect(() => {
@@ -126,11 +132,65 @@ export default function AIInterview() {
     }
   };
 
-  // Toggle voice recording (placeholder)
-  const toggleRecording = () => {
-    setIsRecording(!isRecording);
-    // TODO: Implement actual voice recording with Web Speech API
+  // Toggle browser speech recognition
+  const toggleSpeechRecognition = () => {
+    if (isListening) {
+      stopListening();
+    } else {
+      resetTranscript();
+      startListening();
+    }
   };
+
+  // Play question as audio (ElevenLabs TTS)
+  const playQuestionAudio = async (text) => {
+    if (!text || isPlayingAudio) return;
+
+    setIsPlayingAudio(true);
+    try {
+      const { data } = await api.post('/interviews/text-to-speech', 
+        { text },
+        { responseType: 'blob' }
+      );
+
+      const audioUrl = URL.createObjectURL(data);
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio;
+
+      audio.onended = () => {
+        setIsPlayingAudio(false);
+        URL.revokeObjectURL(audioUrl);
+      };
+
+      audio.onerror = () => {
+        setIsPlayingAudio(false);
+        URL.revokeObjectURL(audioUrl);
+        setError('Failed to play audio. Please try again.');
+      };
+
+      await audio.play();
+    } catch (err) {
+      console.error('TTS error:', err);
+      setIsPlayingAudio(false);
+      setError('Audio playback failed. Check if ElevenLabs API is configured.');
+    }
+  };
+
+  // Stop audio playback
+  const stopAudioPlayback = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlayingAudio(false);
+    }
+  };
+
+  // Update answer when transcript changes
+  useEffect(() => {
+    if (transcript) {
+      setAnswer(transcript);
+    }
+  }, [transcript]);
 
   if (!interviewStarted) {
     return (
@@ -294,6 +354,8 @@ export default function AIInterview() {
               <h3 className="font-semibold text-blue-900 mb-2">What to Expect:</h3>
               <ul className="text-sm text-blue-800 space-y-1">
                 <li>• {totalQuestions} questions tailored to your selection</li>
+                <li>• 🎙️ <strong>Voice-to-Voice:</strong> Speak your answers or type them</li>
+                <li>• 🔊 Questions read aloud automatically</li>
                 <li>• Instant AI-powered feedback after each answer</li>
                 <li>• Detailed performance report at the end</li>
                 <li>• Practice as many times as you want</li>
@@ -351,7 +413,26 @@ export default function AIInterview() {
             <MessageSquare className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Question {questionNumber}</h3>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-lg font-semibold text-gray-900">Question {questionNumber}</h3>
+              <button
+                onClick={() => isPlayingAudio ? stopAudioPlayback() : playQuestionAudio(currentQuestion)}
+                disabled={!currentQuestion}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+              >
+                {isPlayingAudio ? (
+                  <>
+                    <Square className="w-4 h-4" />
+                    Stop
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="w-4 h-4" />
+                    Play Question
+                  </>
+                )}
+              </button>
+            </div>
             <p className="text-gray-800 text-lg leading-relaxed">{currentQuestion}</p>
           </div>
         </div>
@@ -381,19 +462,40 @@ export default function AIInterview() {
             <label className="text-sm font-semibold text-gray-700">Your Answer</label>
             <div className="flex items-center gap-2">
               <button
-                onClick={toggleRecording}
-                className={`p-2 rounded-lg transition-all ${
-                  isRecording 
-                    ? 'bg-red-100 text-red-600 hover:bg-red-200' 
+                onClick={toggleSpeechRecognition}
+                disabled={loading || showEvaluation || !isSupported}
+                className={`p-2 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                  isListening 
+                    ? 'bg-red-100 text-red-600 hover:bg-red-200 animate-pulse' 
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
-                title={isRecording ? 'Stop recording' : 'Start voice recording'}
+                title={isListening ? 'Stop listening' : 'Start voice input (FREE)'}
               >
-                {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
               </button>
               <span className="text-xs text-gray-500">{answer.length} characters</span>
             </div>
           </div>
+          
+          {/* Voice status indicators */}
+          {isListening && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
+              <span className="text-sm text-green-700 font-medium">🎤 Listening... Speak your answer (FREE browser speech recognition)</span>
+            </div>
+          )}
+          
+          {!isSupported && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+              <span className="text-sm text-yellow-700">⚠️ Voice input not supported. Please use Chrome or Edge browser.</span>
+            </div>
+          )}
+          
+          {voiceError && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+              <span className="text-sm text-red-700">{voiceError}</span>
+            </div>
+          )}
           
           <textarea
             value={answer}
@@ -432,6 +534,9 @@ export default function AIInterview() {
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 p-6">
         <h3 className="font-semibold text-gray-900 mb-3">💡 Interview Tips:</h3>
         <ul className="text-sm text-gray-700 space-y-2">
+          <li>• <strong>Voice Input (FREE):</strong> Click mic button - requires internet connection</li>
+          <li>• <strong>Voice Output:</strong> Click "Play Question" to hear questions</li>
+          <li>• <strong>Typing:</strong> You can always type your answer instead</li>
           <li>• Take your time to think before answering</li>
           <li>• Provide specific examples when possible</li>
           <li>• Structure your answers clearly (situation, action, result)</li>
