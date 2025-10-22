@@ -20,11 +20,21 @@ A comprehensive platform for technical interview preparation featuring coding pr
 - Comprehensive performance reports
 - Interview history tracking
 
-### 3. **User Management**
+### 3. **AI Resume Builder** 🆕
+- 15 professional resume templates
+- AI-powered content suggestions
+- LaTeX import/export functionality
+- Real-time resume preview
+- ATS optimization scoring
+- PDF export capability
+- Template selector with categories
+
+### 4. **User Management**
 - JWT-based authentication
 - User dashboard
 - Problem publishing
 - Interview history
+- Resume management
 
 ## 🚀 Tech Stack
 
@@ -131,10 +141,19 @@ Frontend will run on `http://localhost:5173`
    - Add sample and hidden test cases
    - Set time and memory limits
 
-5. **Dashboard**
+5. **Resume Builder**
+   - Create professional resumes
+   - Choose from 15 templates
+   - Get AI suggestions for improvement
+   - Import existing LaTeX resumes
+   - Export to LaTeX or PDF
+   - ATS optimization tips
+
+6. **Dashboard**
    - View your published problems
    - Track interview performance
    - Access interview history
+   - Manage your resumes
 
 ## 🔑 API Endpoints
 
@@ -157,6 +176,17 @@ Frontend will run on `http://localhost:5173`
 - `GET /api/interviews/history` - Get interview history
 - `GET /api/interviews/:id` - Get interview details
 
+### Resumes (Protected)
+- `GET /api/resumes` - Get all user resumes
+- `GET /api/resumes/:id` - Get resume by ID
+- `POST /api/resumes` - Create new resume
+- `PUT /api/resumes/:id` - Update resume
+- `DELETE /api/resumes/:id` - Delete resume
+- `POST /api/resumes/analyze/:id` - AI analyze resume
+- `POST /api/resumes/import-latex` - Import from LaTeX
+- `POST /api/resumes/preview-latex` - Preview LaTeX import
+- `GET /api/resumes/:id/export-latex` - Export to LaTeX
+
 ## 🎨 Features Highlights
 
 ### AI Interview System
@@ -173,6 +203,14 @@ Frontend will run on `http://localhost:5173`
 - **Test Validation**: Compare output against expected results
 - **Detailed Feedback**: Execution time, memory usage, errors
 
+### Resume Builder
+- **15 Templates**: Modern, Classic, Minimal, Professional, Creative, etc.
+- **AI Analysis**: Get suggestions for improvement with fallback support
+- **LaTeX Support**: Import/Export LaTeX resumes
+- **ATS Optimization**: Score and tips for ATS compatibility
+- **Real-time Preview**: See changes instantly
+- **PDF Export**: Download professional PDFs
+
 ## 🛠️ Development
 
 ### Project Structure
@@ -183,16 +221,21 @@ ai-placement-readiness-system/
 │   │   ├── authController.js
 │   │   ├── problemController.js
 │   │   ├── submissionController.js
-│   │   └── interviewController.js
+│   │   ├── interviewController.js
+│   │   └── resumeController.js
 │   ├── models/
 │   │   ├── User.js
 │   │   ├── Problem.js
-│   │   └── Interview.js
+│   │   ├── Interview.js
+│   │   └── Resume.js
 │   ├── routes/
 │   │   ├── authRoutes.js
 │   │   ├── problemRoutes.js
 │   │   ├── submissionRoutes.js
-│   │   └── interviewRoutes.js
+│   │   ├── interviewRoutes.js
+│   │   └── resumeRoutes.js
+│   ├── utils/
+│   │   └── latexConverter.js
 │   ├── middlewares/
 │   │   └── authMiddleware.js
 │   ├── server.js
@@ -200,9 +243,15 @@ ai-placement-readiness-system/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   └── NavBar.jsx
+│   │   │   ├── NavBar.jsx
+│   │   │   ├── TemplateSelector.jsx
+│   │   │   ├── ResumePreview.jsx
+│   │   │   ├── LatexEditor.jsx
+│   │   │   └── TemplateGuide.jsx
 │   │   ├── context/
 │   │   │   └── AuthContext.jsx
+│   │   ├── constants/
+│   │   │   └── resumeTemplates.js
 │   │   ├── pages/
 │   │   │   ├── Home.jsx
 │   │   │   ├── Login.jsx
@@ -212,7 +261,9 @@ ai-placement-readiness-system/
 │   │   │   ├── PublishProblem.jsx
 │   │   │   ├── Dashboard.jsx
 │   │   │   ├── AIInterview.jsx
-│   │   │   └── InterviewReport.jsx
+│   │   │   ├── InterviewReport.jsx
+│   │   │   ├── Resumes.jsx
+│   │   │   └── ResumeBuilder.jsx
 │   │   ├── utils/
 │   │   │   └── api.js
 │   │   ├── App.jsx
@@ -236,11 +287,13 @@ ai-placement-readiness-system/
 - [ ] Video recording with facial analysis
 - [ ] Real-time collaboration on problems
 - [ ] Peer code review system
-- [ ] AI Resume Builder
+- [x] AI Resume Builder ✅
 - [ ] Interview scheduling
 - [ ] Performance leaderboards
 - [ ] Company-specific interview prep
 - [ ] Mobile app
+- [ ] Resume sharing and feedback
+- [ ] Cover letter generator
 
 ## 📝 License
 
