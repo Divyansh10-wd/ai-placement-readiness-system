@@ -10,3 +10,6 @@ frontend/.env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Uploads (temporary audio files)
+backend/uploads/

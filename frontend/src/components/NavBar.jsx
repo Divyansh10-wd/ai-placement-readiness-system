@@ -53,11 +53,10 @@ export default function NavBar() {
               <MessageSquare className="w-4 h-4" />
               <span>AI Interview</span>
             </NavLink>
-            <button disabled className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">
+            <NavLink to="/resumes" className={linkClass}>
               <FileText className="w-4 h-4" />
               <span>Resume Maker</span>
-              <span className="text-xs bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-full font-semibold ml-1">Soon</span>
-            </button>
+            </NavLink>
           </div>
 
           {/* User Actions */}

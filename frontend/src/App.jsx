@@ -9,6 +9,8 @@ import PublishProblem from './pages/PublishProblem.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import AIInterview from './pages/AIInterview.jsx'
 import InterviewReport from './pages/InterviewReport.jsx'
+import Resumes from './pages/Resumes.jsx'
+import ResumeBuilder from './pages/ResumeBuilder.jsx'
 import { useAuth } from './context/AuthContext.jsx'
 
 function ProtectedRoute({ children }) {
@@ -57,6 +59,30 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <InterviewReport />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/resumes"
+            element={
+              <ProtectedRoute>
+                <Resumes />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/resume-builder"
+            element={
+              <ProtectedRoute>
+                <ResumeBuilder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/resume-builder/:id"
+            element={
+              <ProtectedRoute>
+                <ResumeBuilder />
               </ProtectedRoute>
             }
           />

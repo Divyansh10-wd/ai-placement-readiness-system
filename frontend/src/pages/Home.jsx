@@ -131,38 +131,35 @@ export default function Home() {
         </div>
 
         {/* AI Resume Maker */}
-        <div className="bg-white rounded-xl p-8 border border-gray-200 shadow-sm relative">
-          <div className="absolute top-4 right-4 px-2.5 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-            Coming Soon
-          </div>
+        <div className="bg-white rounded-xl p-8 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-4">
-            <FileText className="w-6 h-6 text-gray-400" />
-            <h3 className="text-xl font-bold text-gray-500">AI Resume Maker</h3>
+            <FileText className="w-6 h-6 text-blue-600" />
+            <h3 className="text-xl font-bold text-gray-900">AI Resume Maker</h3>
           </div>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-sm text-gray-600 mb-6">
             Create professional resumes tailored to your target roles using our AI-powered resume builder.
           </p>
           <ul className="space-y-3 mb-6">
-            <li className="flex items-start gap-2 text-sm text-gray-500">
-              <CheckCircle className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+            <li className="flex items-start gap-2 text-sm text-gray-700">
+              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
               <span>AI-powered content suggestions</span>
             </li>
-            <li className="flex items-start gap-2 text-sm text-gray-500">
-              <CheckCircle className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+            <li className="flex items-start gap-2 text-sm text-gray-700">
+              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
               <span>Industry-specific templates</span>
             </li>
-            <li className="flex items-start gap-2 text-sm text-gray-500">
-              <CheckCircle className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+            <li className="flex items-start gap-2 text-sm text-gray-700">
+              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
               <span>ATS-friendly formats</span>
             </li>
-            <li className="flex items-start gap-2 text-sm text-gray-500">
-              <CheckCircle className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+            <li className="flex items-start gap-2 text-sm text-gray-700">
+              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
               <span>Real-time optimization tips</span>
             </li>
           </ul>
-          <button disabled className="block w-full text-center px-4 py-2.5 rounded-lg bg-blue-100 text-blue-400 font-medium cursor-not-allowed">
-            Coming Soon
-          </button>
+          <Link to="/resumes" className="block w-full text-center px-4 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors">
+            Get Started →
+          </Link>
         </div>
       </div>
 
