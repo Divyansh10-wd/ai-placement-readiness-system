@@ -6,6 +6,7 @@ import Signup from './pages/Signup.jsx'
 import Problems from './pages/Problems.jsx'
 import ProblemDetails from './pages/ProblemDetails.jsx'
 import PublishProblem from './pages/PublishProblem.jsx'
+import BulkPublishProblems from './pages/BulkPublishProblems.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import AIInterview from './pages/AIInterview.jsx'
 import InterviewReport from './pages/InterviewReport.jsx'
@@ -35,6 +36,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <PublishProblem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bulk-publish"
+            element={
+              <ProtectedRoute>
+                <BulkPublishProblems />
               </ProtectedRoute>
             }
           />

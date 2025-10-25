@@ -20,6 +20,7 @@ const hiddenSchema = new mongoose.Schema(
 const problemSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
+    slug: { type: String, unique: true, sparse: true },
     statement: { type: String, required: true },
     inputFormat: { type: String },
     outputFormat: { type: String },
@@ -33,5 +34,22 @@ const problemSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Auto-generate slug from title before saving
+problemSchema.pre('save', function(next) {
+  if (!this.slug && this.title) {
+    // Create slug from title: lowercase, replace spaces with hyphens, remove special chars
+    this.slug = this.title
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+    
+    // Add random suffix to ensure uniqueness
+    this.slug += '-' + Date.now().toString(36);
+  }
+  next();
+});
 
 module.exports = mongoose.model('Problem', problemSchema);
