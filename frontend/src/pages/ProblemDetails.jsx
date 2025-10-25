@@ -74,7 +74,8 @@ export default function ProblemDetails() {
   };
 
   const runTests = async () => {
-    if (!problem.samples || problem.samples.length === 0) {
+    const testCases = problem.sampleTestCases || problem.samples || [];
+    if (testCases.length === 0) {
       setError('No test cases available');
       return;
     }
@@ -84,17 +85,23 @@ export default function ProblemDetails() {
     
     try {
       const testResults = [];
-      for (let i = 0; i < problem.samples.length; i++) {
-        const sample = problem.samples[i];
+      for (let i = 0; i < testCases.length; i++) {
+        const sample = testCases[i];
         const { data } = await api.post('/submissions', {
           sourceCode: code,
           languageId: language.id,
           stdin: sample.input,
         });
         
-        const expectedOutput = sample.output.trim();
-        const actualOutput = (data.result.stdout || '').trim();
-        const passed = actualOutput === expectedOutput;
+        // Get expected output (handle both old and new schema)
+        const expectedOutput = (sample.expectedOutput || sample.output || '').trim();
+        const actualOutput = (data.result?.stdout || '').trim();
+        
+        // Check if execution was successful (status id 3 = Accepted)
+        const executionSuccess = data.result?.status?.id === 3;
+        
+        // Only mark as passed if execution succeeded AND output matches
+        const passed = executionSuccess && actualOutput === expectedOutput;
         
         testResults.push({
           testCase: i + 1,
@@ -102,9 +109,10 @@ export default function ProblemDetails() {
           expectedOutput,
           actualOutput,
           passed,
-          status: data.result.status,
-          time: data.result.time,
-          memory: data.result.memory,
+          status: data.result?.status,
+          time: data.result?.time,
+          memory: data.result?.memory,
+          error: data.result?.stderr || data.result?.compile_output,
         });
       }
       
@@ -112,7 +120,7 @@ export default function ProblemDetails() {
       setResult({
         testResults,
         allPassed,
-        verdict: allPassed ? 'All Tests Passed' : 'Some Tests Failed',
+        verdict: allPassed ? 'All Tests Passed ✅' : 'Some Tests Failed ❌',
       });
     } catch (e) {
       setError(e.response?.data?.message || 'Test execution failed');
@@ -200,7 +208,9 @@ export default function ProblemDetails() {
                     <div className="text-xs space-y-1">
                       <div><span className="font-medium">Input:</span> <code className="bg-white px-1 py-0.5 rounded">{test.input}</code></div>
                       <div><span className="font-medium">Expected:</span> <code className="bg-white px-1 py-0.5 rounded">{test.expectedOutput}</code></div>
-                      <div><span className="font-medium">Got:</span> <code className="bg-white px-1 py-0.5 rounded">{test.actualOutput}</code></div>
+                      <div><span className="font-medium">Got:</span> <code className={`px-1 py-0.5 rounded ${test.passed ? 'bg-white' : 'bg-red-100'}`}>{test.actualOutput || '(no output)'}</code></div>
+                      {test.status && <div><span className="font-medium">Status:</span> <span className="text-gray-600">{test.status.description}</span></div>}
+                      {test.error && <div className="text-red-700"><span className="font-medium">Error:</span> <pre className="mt-1 text-xs bg-red-100 p-2 rounded">{test.error}</pre></div>}
                       {test.time && <span className="text-gray-600">Time: {test.time}s</span>}
                     </div>
                   </div>
