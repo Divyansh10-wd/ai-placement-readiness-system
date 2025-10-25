@@ -1,6 +1,8 @@
 # 🎯 AI Placement Readiness System
 
-A comprehensive platform for technical interview preparation featuring coding problems, AI-powered mock interviews, and performance analytics.
+A comprehensive platform for technical interview preparation featuring coding problems, AI-powered mock interviews, resume builder, and performance analytics.
+
+📚 **[View Complete Guide](COMPLETE_GUIDE.md)** for detailed documentation, troubleshooting, and API reference.
 
 ## ✨ Features
 
@@ -41,8 +43,9 @@ A comprehensive platform for technical interview preparation featuring coding pr
 ### Backend
 - **Node.js** & **Express.js**
 - **MongoDB** with Mongoose
-- **OpenAI API** for AI interviews
+- **Groq API** (Llama 3.3 70B) for AI interviews
 - **Judge0 API** for code execution
+- **ElevenLabs API** for voice (optional)
 - **JWT** for authentication
 - **bcryptjs** for password hashing
 
@@ -59,8 +62,9 @@ A comprehensive platform for technical interview preparation featuring coding pr
 ### Prerequisites
 - Node.js (v16 or higher)
 - MongoDB (local or Atlas)
-- OpenAI API Key (for AI interviews)
-- Judge0 API Key (optional, has fallback)
+- Groq API Key (for AI interviews)
+- Judge0 API Key (for code execution)
+- ElevenLabs API Key (optional, for voice)
 
 ### Backend Setup
 
@@ -79,9 +83,10 @@ npm install
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
-OPENAI_API_KEY=your_openai_api_key
+GROQ_API_KEY=your_groq_api_key
 JUDGE0_API_URL=https://judge0-ce.p.rapidapi.com/submissions
-JUDGE0_API_KEY=your_judge0_api_key (optional)
+JUDGE0_API_KEY=your_judge0_api_key
+ELEVENLABS_API_KEY=your_elevenlabs_api_key  # Optional
 ```
 
 4. Start the server:
@@ -190,12 +195,13 @@ Frontend will run on `http://localhost:5173`
 ## 🎨 Features Highlights
 
 ### AI Interview System
-- **Adaptive Questioning**: AI generates contextual follow-up questions
+- **Adaptive Questioning**: AI generates contextual follow-up questions using Groq's Llama 3.3 70B
 - **Intelligent Evaluation**: Detailed feedback on every answer
-- **Multiple Categories**: Technical, Behavioral, System Design
+- **Multiple Categories**: Frontend, Backend, DevOps, ML/AI, System Design, Behavioral, and more
 - **Difficulty Levels**: Easy, Medium, Hard
+- **Voice Interviews**: Optional voice-to-voice interviews with ElevenLabs TTS
 - **Performance Analytics**: Score breakdowns and improvement suggestions
-- **Fallback System**: Works without OpenAI API (uses question bank)
+- **Question Bank**: 100+ curated interview questions
 
 ### Code Execution
 - **Real-time Execution**: Powered by Judge0
@@ -283,16 +289,16 @@ ai-placement-readiness-system/
 
 ## 🚧 Future Enhancements
 
-- [ ] Voice recording for AI interviews
+- [x] Voice interviews ✅
+- [x] AI Resume Builder ✅
+- [x] LaTeX import/export ✅
 - [ ] Video recording with facial analysis
 - [ ] Real-time collaboration on problems
 - [ ] Peer code review system
-- [x] AI Resume Builder ✅
 - [ ] Interview scheduling
 - [ ] Performance leaderboards
 - [ ] Company-specific interview prep
 - [ ] Mobile app
-- [ ] Resume sharing and feedback
 - [ ] Cover letter generator
 
 ## 📝 License
