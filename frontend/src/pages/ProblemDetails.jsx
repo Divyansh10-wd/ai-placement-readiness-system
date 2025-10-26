@@ -56,21 +56,8 @@ export default function ProblemDetails() {
   };
 
   const run = async () => {
-    setSubmitting(true);
-    setResult(null);
-    setError('');
-    try {
-      const { data } = await api.post('/submissions', {
-        sourceCode: code,
-        languageId: language.id,
-        stdin,
-      });
-      setResult(data.result);
-    } catch (e) {
-      setError(e.response?.data?.message || 'Execution failed');
-    } finally {
-      setSubmitting(false);
-    }
+    // Now "Run Code" also validates against test cases
+    await runTests();
   };
 
   const runTests = async () => {
@@ -170,19 +157,15 @@ export default function ProblemDetails() {
                 <option key={l.id} value={l.id}>{l.label}</option>
               ))}
             </select>
-            <button onClick={run} disabled={submitting} className="px-4 py-2 rounded-lg bg-gray-600 text-white text-sm font-medium hover:bg-gray-700 disabled:opacity-50">
-              {submitting ? 'Running...' : 'Run Code'}
+            <button onClick={run} disabled={submitting} className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
+              {submitting ? 'Testing...' : 'Run Tests'}
             </button>
             <button onClick={runTests} disabled={submitting} className="px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-medium hover:bg-green-700 disabled:opacity-50">
-              {submitting ? 'Testing...' : 'Submit'}
+              {submitting ? 'Submitting...' : 'Submit Solution'}
             </button>
           </div>
           <div className="border rounded overflow-hidden">
             <Editor height="350px" language={editorLang} value={code} onChange={(val)=>setCode(val)} theme="vs-dark" options={{ fontSize: 14 }} />
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Custom Input</label>
-            <textarea className="w-full border rounded p-2" rows={4} value={stdin} onChange={(e)=>setStdin(e.target.value)} />
           </div>
           {result && result.testResults ? (
             <div className="p-4 bg-white border rounded-lg text-sm space-y-3">
