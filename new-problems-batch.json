@@ -1,0 +1,527 @@
+[
+  {
+    "title": "Valid Parentheses",
+    "statement": "Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if valid.",
+    "inputFormat": "A single string",
+    "outputFormat": "YES or NO",
+    "constraints": "1 <= length <= 10^4",
+    "samples": [
+      {
+        "input": "()",
+        "output": "YES"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "{[]}",
+        "output": "YES"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Longest Common Prefix",
+    "statement": "Find longest common prefix amongst array of strings.",
+    "inputFormat": "First line: n\\nNext n lines: strings",
+    "outputFormat": "Common prefix",
+    "constraints": "1 <= n <= 200",
+    "samples": [
+      {
+        "input": "3\\nflower\\nflow\\nflight",
+        "output": "fl"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "2\\nabc\\nabcd",
+        "output": "abc"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Remove Duplicates Sorted",
+    "statement": "Remove duplicates from sorted array in-place.",
+    "inputFormat": "First line: n\\nSecond line: n sorted integers",
+    "outputFormat": "New length",
+    "constraints": "0 <= n <= 30000",
+    "samples": [
+      {
+        "input": "3\\n1 1 2",
+        "output": "2"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "5\\n1 2 3 4 5",
+        "output": "5"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Power of Two",
+    "statement": "Return YES if n is power of two.",
+    "inputFormat": "Single integer n",
+    "outputFormat": "YES or NO",
+    "constraints": "-2^31 <= n <= 2^31-1",
+    "samples": [
+      {
+        "input": "16",
+        "output": "YES"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "3",
+        "output": "NO"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Single Number",
+    "statement": "Every element appears twice except one. Find it.",
+    "inputFormat": "First line: n\\nSecond line: n integers",
+    "outputFormat": "The single number",
+    "constraints": "1 <= n <= 30000",
+    "samples": [
+      {
+        "input": "3\\n2 2 1",
+        "output": "1"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "5\\n4 1 2 1 2",
+        "output": "4"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Move Zeroes",
+    "statement": "Move all 0's to end maintaining order.",
+    "inputFormat": "First line: n\\nSecond line: n integers",
+    "outputFormat": "Array with zeros moved",
+    "constraints": "1 <= n <= 10^4",
+    "samples": [
+      {
+        "input": "5\\n0 1 0 3 12",
+        "output": "1 3 12 0 0"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "3\\n1 2 3",
+        "output": "1 2 3"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Array Intersection",
+    "statement": "Return intersection of two arrays.",
+    "inputFormat": "First line: n\\nSecond line: n integers\\nThird line: m\\nFourth line: m integers",
+    "outputFormat": "Intersection elements",
+    "constraints": "1 <= n,m <= 1000",
+    "samples": [
+      {
+        "input": "2\\n1 2\\n2\\n2 2",
+        "output": "2"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "3\\n1 2 3\\n3\\n4 5 6",
+        "output": ""
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Contains Duplicate",
+    "statement": "Return YES if any value appears twice.",
+    "inputFormat": "First line: n\\nSecond line: n integers",
+    "outputFormat": "YES or NO",
+    "constraints": "1 <= n <= 10^5",
+    "samples": [
+      {
+        "input": "4\\n1 2 3 1",
+        "output": "YES"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "4\\n1 2 3 4",
+        "output": "NO"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Rotate Array",
+    "statement": "Rotate array to right by k steps.",
+    "inputFormat": "First line: n\\nSecond line: n integers\\nThird line: k",
+    "outputFormat": "Rotated array",
+    "constraints": "1 <= n <= 10^5",
+    "samples": [
+      {
+        "input": "7\\n1 2 3 4 5 6 7\\n3",
+        "output": "5 6 7 1 2 3 4"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "4\\n1 2 3 4\\n1",
+        "output": "4 1 2 3"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Best Time Buy Sell Stock",
+    "statement": "Find maximum profit from buying and selling once.",
+    "inputFormat": "First line: n\\nSecond line: n prices",
+    "outputFormat": "Maximum profit",
+    "constraints": "1 <= n <= 10^5",
+    "samples": [
+      {
+        "input": "6\\n7 1 5 3 6 4",
+        "output": "5"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "5\\n7 6 4 3 1",
+        "output": "0"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Climbing Stairs",
+    "statement": "Count ways to climb n stairs (1 or 2 steps).",
+    "inputFormat": "Single integer n",
+    "outputFormat": "Number of ways",
+    "constraints": "1 <= n <= 45",
+    "samples": [
+      {
+        "input": "3",
+        "output": "3"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "5",
+        "output": "8"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Maximum Subarray",
+    "statement": "Find contiguous subarray with largest sum.",
+    "inputFormat": "First line: n\\nSecond line: n integers",
+    "outputFormat": "Maximum sum",
+    "constraints": "1 <= n <= 10^5",
+    "samples": [
+      {
+        "input": "9\\n-2 1 -3 4 -1 2 1 -5 4",
+        "output": "6"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "5\\n5 4 -1 7 8",
+        "output": "23"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Plus One",
+    "statement": "Increment integer represented as array of digits.",
+    "inputFormat": "First line: n\\nSecond line: n digits",
+    "outputFormat": "Digits after adding one",
+    "constraints": "1 <= n <= 100",
+    "samples": [
+      {
+        "input": "3\\n1 2 3",
+        "output": "1 2 4"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "3\\n9 9 9",
+        "output": "1 0 0 0"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Majority Element",
+    "statement": "Find element appearing more than n/2 times.",
+    "inputFormat": "First line: n\\nSecond line: n integers",
+    "outputFormat": "Majority element",
+    "constraints": "1 <= n <= 50000",
+    "samples": [
+      {
+        "input": "3\\n3 2 3",
+        "output": "3"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "7\\n2 2 1 1 1 2 2",
+        "output": "2"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Happy Number",
+    "statement": "Return YES if sum of squares of digits reaches 1.",
+    "inputFormat": "Single integer n",
+    "outputFormat": "YES or NO",
+    "constraints": "1 <= n <= 2^31-1",
+    "samples": [
+      {
+        "input": "19",
+        "output": "YES"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "2",
+        "output": "NO"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Factorial Trailing Zeroes",
+    "statement": "Count trailing zeroes in n factorial.",
+    "inputFormat": "Single integer n",
+    "outputFormat": "Number of zeroes",
+    "constraints": "0 <= n <= 10^4",
+    "samples": [
+      {
+        "input": "5",
+        "output": "1"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "25",
+        "output": "6"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Excel Column Number",
+    "statement": "Convert Excel column title to number.",
+    "inputFormat": "String column title",
+    "outputFormat": "Column number",
+    "constraints": "1 <= length <= 7",
+    "samples": [
+      {
+        "input": "AB",
+        "output": "28"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "ZY",
+        "output": "701"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Reverse Integer",
+    "statement": "Reverse digits of integer. Return 0 if overflow.",
+    "inputFormat": "Single integer x",
+    "outputFormat": "Reversed integer",
+    "constraints": "-2^31 <= x <= 2^31-1",
+    "samples": [
+      {
+        "input": "123",
+        "output": "321"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "-123",
+        "output": "-321"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Roman to Integer",
+    "statement": "Convert roman numeral to integer.",
+    "inputFormat": "Roman numeral string",
+    "outputFormat": "Integer value",
+    "constraints": "1 <= length <= 15",
+    "samples": [
+      {
+        "input": "III",
+        "output": "3"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "LVIII",
+        "output": "58"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Length Last Word",
+    "statement": "Return length of last word in string.",
+    "inputFormat": "String s",
+    "outputFormat": "Length",
+    "constraints": "1 <= length <= 10^4",
+    "samples": [
+      {
+        "input": "Hello World",
+        "output": "5"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "a",
+        "output": "1"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Add Binary",
+    "statement": "Add two binary strings.",
+    "inputFormat": "Two binary strings",
+    "outputFormat": "Binary sum",
+    "constraints": "1 <= length <= 10^4",
+    "samples": [
+      {
+        "input": "11\\n1",
+        "output": "100"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "1010\\n1011",
+        "output": "10101"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Square Root",
+    "statement": "Return square root rounded down. No built-in functions.",
+    "inputFormat": "Single integer x",
+    "outputFormat": "Integer square root",
+    "constraints": "0 <= x <= 2^31-1",
+    "samples": [
+      {
+        "input": "4",
+        "output": "2"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "8",
+        "output": "2"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Search Insert Position",
+    "statement": "Return index where target is or should be inserted.",
+    "inputFormat": "First line: n\\nSecond line: n sorted integers\\nThird line: target",
+    "outputFormat": "Index",
+    "constraints": "1 <= n <= 10^4",
+    "samples": [
+      {
+        "input": "4\\n1 3 5 6\\n5",
+        "output": "2"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "4\\n1 3 5 6\\n2",
+        "output": "1"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Isomorphic Strings",
+    "statement": "Check if two strings are isomorphic.",
+    "inputFormat": "Two strings",
+    "outputFormat": "YES or NO",
+    "constraints": "1 <= length <= 50000",
+    "samples": [
+      {
+        "input": "egg\\nadd",
+        "output": "YES"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "foo\\nbar",
+        "output": "NO"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "First Unique Character",
+    "statement": "Find first non-repeating character index.",
+    "inputFormat": "String s",
+    "outputFormat": "Index or -1",
+    "constraints": "1 <= length <= 10^5",
+    "samples": [
+      {
+        "input": "leetcode",
+        "output": "0"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "aabb",
+        "output": "-1"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  }
+]
