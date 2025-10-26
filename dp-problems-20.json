@@ -1,0 +1,422 @@
+[
+  {
+    "title": "House Robber",
+    "statement": "Rob houses along street. Adjacent houses have security. Find max money.",
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Max money",
+    "constraints": "1 <= n <= 100",
+    "samples": [
+      {
+        "input": "4\n1 2 3 1",
+        "output": "4"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "5\n2 7 9 3 1",
+        "output": "12"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Coin Change",
+    "statement": "Min coins to make amount. Return -1 if impossible.",
+    "inputFormat": "First line: n\nSecond line: n coins\nThird line: amount",
+    "outputFormat": "Min coins",
+    "constraints": "1 <= n <= 12",
+    "samples": [
+      {
+        "input": "3\n1 2 5\n11",
+        "output": "3"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "1\n2\n3",
+        "output": "-1"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Longest Increasing Subsequence",
+    "statement": "Find length of longest strictly increasing subsequence.",
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "LIS length",
+    "constraints": "1 <= n <= 2500",
+    "samples": [
+      {
+        "input": "8\n10 9 2 5 3 7 101 18",
+        "output": "4"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "4\n0 1 0 3",
+        "output": "2"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Edit Distance",
+    "statement": "Min operations to convert word1 to word2.",
+    "inputFormat": "Two strings",
+    "outputFormat": "Min operations",
+    "constraints": "0 <= length <= 500",
+    "samples": [
+      {
+        "input": "horse\nros",
+        "output": "3"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "intention\nexecution",
+        "output": "5"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Unique Paths",
+    "statement": "Robot on grid. Move right or down only. Count paths.",
+    "inputFormat": "Two integers m n",
+    "outputFormat": "Path count",
+    "constraints": "1 <= m,n <= 100",
+    "samples": [
+      {
+        "input": "3 7",
+        "output": "28"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "3 2",
+        "output": "3"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Partition Equal Subset",
+    "statement": "Partition array into two equal sum subsets?",
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "YES or NO",
+    "constraints": "1 <= n <= 200",
+    "samples": [
+      {
+        "input": "4\n1 5 11 5",
+        "output": "YES"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "2\n1 2",
+        "output": "NO"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Decode Ways",
+    "statement": "Count ways to decode digit string (A=1...Z=26).",
+    "inputFormat": "Digit string",
+    "outputFormat": "Ways count",
+    "constraints": "1 <= length <= 100",
+    "samples": [
+      {
+        "input": "12",
+        "output": "2"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "226",
+        "output": "3"
+      }
+    ],
+    "timeLimitMs": 1000,
+    "memoryLimitMB": 128
+  },
+  {
+    "title": "Word Break",
+    "statement": "Can string be segmented into dictionary words?",
+    "inputFormat": "First line: s\nSecond line: n\nNext n lines: words",
+    "outputFormat": "YES or NO",
+    "constraints": "1 <= length <= 300",
+    "samples": [
+      {
+        "input": "leetcode\n2\nleet\ncode",
+        "output": "YES"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "applepenapple\n2\napple\npen",
+        "output": "YES"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Longest Common Subsequence",
+    "statement": "Find LCS length of two strings.",
+    "inputFormat": "Two strings",
+    "outputFormat": "LCS length",
+    "constraints": "1 <= length <= 1000",
+    "samples": [
+      {
+        "input": "abcde\nace",
+        "output": "3"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "abc\nabc",
+        "output": "3"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Maximum Product Subarray",
+    "statement": "Find contiguous subarray with largest product.",
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Max product",
+    "constraints": "1 <= n <= 20000",
+    "samples": [
+      {
+        "input": "4\n2 3 -2 4",
+        "output": "6"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "3\n-2 0 -1",
+        "output": "0"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Triangle Min Path",
+    "statement": "Find minimum path sum from top to bottom of triangle.",
+    "inputFormat": "First line: n\nNext n lines: triangle",
+    "outputFormat": "Min sum",
+    "constraints": "1 <= n <= 200",
+    "samples": [
+      {
+        "input": "4\n2\n3 4\n6 5 7\n4 1 8 3",
+        "output": "11"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "1\n-10",
+        "output": "-10"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Min Path Sum Grid",
+    "statement": "Min sum path from top-left to bottom-right.",
+    "inputFormat": "First line: m n\nNext m lines: n integers",
+    "outputFormat": "Min sum",
+    "constraints": "1 <= m,n <= 200",
+    "samples": [
+      {
+        "input": "3 3\n1 3 1\n1 5 1\n4 2 1",
+        "output": "7"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "2 2\n1 2\n1 1",
+        "output": "3"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Jump Game",
+    "statement": "Can you reach last index? Each element is max jump.",
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "YES or NO",
+    "constraints": "1 <= n <= 10000",
+    "samples": [
+      {
+        "input": "5\n2 3 1 1 4",
+        "output": "YES"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "5\n3 2 1 0 4",
+        "output": "NO"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Palindrome Partitioning Min Cuts",
+    "statement": "Min cuts for palindrome partitioning.",
+    "inputFormat": "String s",
+    "outputFormat": "Min cuts",
+    "constraints": "1 <= length <= 2000",
+    "samples": [
+      {
+        "input": "aab",
+        "output": "1"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "a",
+        "output": "0"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Burst Balloons",
+    "statement": "Burst balloons to collect max coins.",
+    "inputFormat": "First line: n\nSecond line: n values",
+    "outputFormat": "Max coins",
+    "constraints": "1 <= n <= 300",
+    "samples": [
+      {
+        "input": "4\n3 1 5 8",
+        "output": "167"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "1\n1",
+        "output": "1"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Interleaving String",
+    "statement": "Is s3 formed by interleaving s1 and s2?",
+    "inputFormat": "Three strings",
+    "outputFormat": "YES or NO",
+    "constraints": "0 <= length <= 100",
+    "samples": [
+      {
+        "input": "aabcc\ndbbca\naadbbcbcac",
+        "output": "YES"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "a\nb\na",
+        "output": "NO"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Distinct Subsequences",
+    "statement": "Count distinct subsequences of s that equal t.",
+    "inputFormat": "Two strings",
+    "outputFormat": "Count",
+    "constraints": "1 <= length <= 1000",
+    "samples": [
+      {
+        "input": "rabbbit\nrabbit",
+        "output": "3"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "babgbag\nbag",
+        "output": "5"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Wildcard Matching",
+    "statement": "Implement wildcard with ? and *",
+    "inputFormat": "Two strings",
+    "outputFormat": "YES or NO",
+    "constraints": "0 <= length <= 2000",
+    "samples": [
+      {
+        "input": "aa\na",
+        "output": "NO"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "aa\n*",
+        "output": "YES"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Maximal Square",
+    "statement": "Find largest square of 1s in binary matrix.",
+    "inputFormat": "First line: m n\nNext m lines: n digits",
+    "outputFormat": "Area",
+    "constraints": "1 <= m,n <= 300",
+    "samples": [
+      {
+        "input": "4 5\n1 0 1 0 0\n1 0 1 1 1\n1 1 1 1 1\n1 0 0 1 0",
+        "output": "4"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "2 2\n0 1\n1 0",
+        "output": "1"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  },
+  {
+    "title": "Best Time Buy Sell Stock with Cooldown",
+    "statement": "Max profit with cooldown after selling.",
+    "inputFormat": "First line: n\nSecond line: n prices",
+    "outputFormat": "Max profit",
+    "constraints": "1 <= n <= 5000",
+    "samples": [
+      {
+        "input": "6\n1 2 3 0 2",
+        "output": "3"
+      }
+    ],
+    "hiddenTests": [
+      {
+        "input": "1\n1",
+        "output": "0"
+      }
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMB": 256
+  }
+]
