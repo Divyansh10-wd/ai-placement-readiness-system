@@ -5,6 +5,7 @@ import { Save, Plus, Trash2, Sparkles, Eye, Download, ArrowLeft, Layout, FileCod
 import TemplateSelector from '../components/TemplateSelector';
 import ResumePreview from '../components/ResumePreview';
 import LatexEditor from '../components/LatexEditor';
+import LatexEditorSplit from '../components/LatexEditorSplit';
 import { getTemplateById } from '../constants/resumeTemplates';
 
 export default function ResumeBuilder() {
@@ -16,6 +17,7 @@ export default function ResumeBuilder() {
   const [showPreview, setShowPreview] = useState(false);
   const [showTemplateSelector, setShowTemplateSelector] = useState(false);
   const [showLatexEditor, setShowLatexEditor] = useState(null); // 'import' or 'export'
+  const [showLatexEditorSplit, setShowLatexEditorSplit] = useState(false);
 
   const [resume, setResume] = useState({
     title: 'My Resume',
@@ -231,13 +233,22 @@ export default function ResumeBuilder() {
         </div>
         <div className="flex items-center gap-3">
           <button
+            onClick={() => setShowLatexEditorSplit(true)}
+            disabled={!id}
+            title="LaTeX Editor with Live Preview"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md"
+          >
+            <FileCode className="w-4 h-4" />
+            LaTeX Editor
+          </button>
+          <button
             onClick={() => setShowLatexEditor('export')}
             disabled={!id}
             title="Export to LaTeX"
             className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            <FileCode className="w-4 h-4" />
-            LaTeX
+            <Download className="w-4 h-4" />
+            Export LaTeX
           </button>
           <button
             onClick={handleAnalyze}
@@ -627,6 +638,19 @@ export default function ResumeBuilder() {
           onClose={() => setShowLatexEditor(null)}
           onImport={(importedResume) => {
             navigate(`/resume-builder/${importedResume._id}`);
+          }}
+        />
+      )}
+
+      {/* LaTeX Editor with Split View */}
+      {showLatexEditorSplit && (
+        <LatexEditorSplit
+          resumeData={resume}
+          token={token}
+          onClose={() => setShowLatexEditorSplit(false)}
+          onSave={(updatedResume) => {
+            setResume(updatedResume);
+            setShowLatexEditorSplit(false);
           }}
         />
       )}

@@ -35,14 +35,20 @@ const upload = multer({
 
 exports.uploadAudio = upload;
 
-// Initialize OpenAI client
-const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
+// Initialize OpenAI client (for Groq compatibility)
+// Groq uses OpenAI SDK but with different base URL
+const openai = process.env.GROQ_API_KEY ? new OpenAI({ 
+  apiKey: process.env.GROQ_API_KEY,
+  baseURL: 'https://api.groq.com/openai/v1'
+}) : (process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null);
 
-// Debug: Log OpenAI initialization status
-if (openai) {
+// Debug: Log AI API initialization status
+if (process.env.GROQ_API_KEY) {
+  console.log('✅ Groq API initialized successfully (FREE)');
+} else if (openai) {
   console.log('✅ OpenAI API initialized successfully');
 } else {
-  console.log('⚠️ OpenAI API key not found - using fallback mode');
+  console.log('⚠️ No AI API key found - using fallback mode');
 }
 
 // Debug: Log ElevenLabs initialization status
@@ -847,13 +853,12 @@ ${previousQuestions.length > 0 ? `\nAvoid repeating these topics: ${previousQues
 Return ONLY the question, nothing else.`;
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'llama-3.3-70b-versatile',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: `Generate a ${type} interview question.` }
       ],
-      temperature: 0.8,
-      max_tokens: 150
+      temperature: 0.8
     });
 
     return response.choices[0].message.content.trim();
@@ -879,34 +884,47 @@ const evaluateAnswer = async (question, answer, type) => {
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'llama-3.3-70b-versatile',
       messages: [
         {
           role: 'system',
-          content: `You are an expert interviewer evaluating a ${type} interview answer. 
-Provide:
+          content: `You are an expert technical interviewer. Evaluate the answer and provide:
 1. A score from 1-10
-2. Constructive feedback (2-3 sentences)
-3. One specific improvement suggestion
+2. Brief constructive feedback (2-3 sentences)
 
-Format: Score: X/10\nFeedback: ...\nImprovement: ...`
+Respond in JSON format: {"score": number, "feedback": "string"}`
         },
         {
           role: 'user',
-          content: `Question: ${question}\n\nCandidate's Answer: ${answer}\n\nEvaluate this answer.`
+          content: `Question: ${question}\n\nAnswer: ${answer}\n\nInterview Type: ${type}`
         }
       ],
-      temperature: 0.7,
-      max_tokens: 200
+      temperature: 0.7
     });
 
-    const evaluation = response.choices[0].message.content;
-    const scoreMatch = evaluation.match(/Score:\s*(\d+)/i);
-    const score = scoreMatch ? parseInt(scoreMatch[1]) : 5;
+    const evaluationText = response.choices[0].message.content.trim();
+    
+    // Try to parse as JSON first
+    try {
+      const jsonMatch = evaluationText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        return {
+          score: parsed.score || 5,
+          feedback: parsed.feedback || evaluationText
+        };
+      }
+    } catch (e) {
+      // If JSON parsing fails, try to extract score and feedback manually
+    }
+    
+    // Fallback: try to extract score from text
+    const scoreMatch = evaluationText.match(/["\']?score["\']?\s*:\s*(\d+)/i);
+    const feedbackMatch = evaluationText.match(/["\']?feedback["\']?\s*:\s*["\']([^"']+)["\']?/i);
     
     return {
-      score,
-      feedback: evaluation
+      score: scoreMatch ? parseInt(scoreMatch[1]) : 5,
+      feedback: feedbackMatch ? feedbackMatch[1] : evaluationText
     };
   } catch (error) {
     console.error('Evaluation error:', error.message);
@@ -931,7 +949,7 @@ exports.startInterview = async (req, res) => {
     const userName = req.user.name;
 
     console.log('Starting interview:', { userId, userName, type, difficulty });
-
+    
     // Generate first question before creating interview
     const firstQuestion = await generateAIQuestion(type, difficulty);
     
@@ -950,7 +968,7 @@ exports.startInterview = async (req, res) => {
 
     await interview.save();
     console.log('Interview created:', interview._id);
-
+    
     res.json({
       interviewId: interview._id,
       question: firstQuestion,
@@ -967,7 +985,7 @@ exports.startInterview = async (req, res) => {
 exports.submitAnswer = async (req, res) => {
   try {
     const { interviewId, question, answer } = req.body;
-
+    
     if (!answer || answer.trim().length < 10) {
       return res.status(400).json({ message: 'Answer is too short. Please provide more detail.' });
     }
@@ -979,7 +997,7 @@ exports.submitAnswer = async (req, res) => {
 
     // Evaluate the answer
     const evaluation = await evaluateAnswer(question, answer, interview.type);
-
+    
     // Save question and answer
     interview.questions.push({
       question,
@@ -1041,19 +1059,18 @@ exports.completeInterview = async (req, res) => {
     if (openai) {
       try {
         const response = await openai.chat.completions.create({
-          model: 'gpt-3.5-turbo',
+          model: 'llama-3.3-70b-versatile',
           messages: [
             {
               role: 'system',
-              content: 'You are an expert career coach providing interview feedback.'
+              content: 'You are an expert interview coach. Provide brief, actionable feedback.'
             },
             {
               role: 'user',
-              content: `Provide overall feedback for a ${interview.type} interview. Average score: ${avgScore.toFixed(1)}/10. Number of questions: ${interview.questions.length}. Give 3-4 sentences with specific improvement areas.`
+              content: `Interview Type: ${interview.type}\nDifficulty: ${interview.difficulty}\nAverage Score: ${avgScore.toFixed(1)}/10\nTotal Questions: ${interview.questions.length}\n\nProvide 2-3 sentences of overall feedback and improvement suggestions.`
             }
           ],
-          temperature: 0.7,
-          max_tokens: 200
+          temperature: 0.7
         });
         overallFeedback = response.choices[0].message.content;
       } catch (error) {
@@ -1197,7 +1214,7 @@ exports.textToSpeech = async (req, res) => {
       },
       data: {
         text: text,
-        model_id: 'eleven_monolingual_v1',
+        model_id: 'eleven_turbo_v2_5',
         voice_settings: {
           stability: 0.5,
           similarity_boost: 0.5

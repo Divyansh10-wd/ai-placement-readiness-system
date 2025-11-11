@@ -22,14 +22,21 @@ A comprehensive platform for technical interview preparation featuring coding pr
 - Comprehensive performance reports
 - Interview history tracking
 
-### 3. **AI Resume Builder** 🆕
-- 15 professional resume templates
-- AI-powered content suggestions
-- LaTeX import/export functionality
-- Real-time resume preview
-- ATS optimization scoring
-- PDF export capability
-- Template selector with categories
+### 3. **AI Resume Builder & Analysis** 🆕
+- **Resume Builder**: 15 professional templates with LaTeX import/export
+- **AI Resume Analysis**: Powered by Groq AI (Llama 3.3 70B)
+  - Overall Score (0-100): Content quality, formatting, achievements
+  - ATS Score (0-100): Applicant Tracking System compatibility
+  - Impact Score (0-100): Achievement-oriented content rating
+  - Detailed strengths, weaknesses, and recommendations
+- **AI Resume Improvement**: Automatic enhancement of resume content
+  - Stronger action verbs and descriptions
+  - Quantifiable achievements
+  - ATS optimization with keywords
+  - Professional summary enhancement
+- Upload PDF/TXT or paste text directly
+- Download improved resume
+- Real-time preview and PDF export
 
 ### 4. **User Management**
 - JWT-based authentication
@@ -62,9 +69,32 @@ A comprehensive platform for technical interview preparation featuring coding pr
 ### Prerequisites
 - Node.js (v16 or higher)
 - MongoDB (local or Atlas)
-- Groq API Key (for AI interviews)
+- Groq API Key (for AI interviews & resume analysis)
 - Judge0 API Key (for code execution)
 - ElevenLabs API Key (optional, for voice)
+
+### Quick Start
+
+```bash
+# Clone and navigate
+git clone <repository-url>
+cd ai-placement-readiness-system
+
+# Backend setup
+cd backend
+npm install
+cp .env.example .env  # Add your API keys
+npm start  # or npm run dev for development
+
+# Frontend setup (new terminal)
+cd frontend
+npm install
+npm run dev
+```
+
+**Access the application:**
+- Frontend: http://localhost:5173
+- Backend: http://localhost:5000
 
 ### Backend Setup
 
@@ -187,7 +217,10 @@ Frontend will run on `http://localhost:5173`
 - `POST /api/resumes` - Create new resume
 - `PUT /api/resumes/:id` - Update resume
 - `DELETE /api/resumes/:id` - Delete resume
-- `POST /api/resumes/analyze/:id` - AI analyze resume
+- `POST /api/resumes/:id/analyze` - AI analyze resume (builder)
+- `POST /api/resumes/analyze-text` - Analyze resume text (Groq AI)
+- `POST /api/resumes/analyze-pdf` - Analyze PDF resume (Groq AI)
+- `POST /api/resumes/improve-text` - Improve resume text (Groq AI)
 - `POST /api/resumes/import-latex` - Import from LaTeX
 - `POST /api/resumes/preview-latex` - Preview LaTeX import
 - `GET /api/resumes/:id/export-latex` - Export to LaTeX
@@ -287,11 +320,41 @@ ai-placement-readiness-system/
 - Environment variables for sensitive data
 - CORS enabled for frontend-backend communication
 
+## 🐛 Troubleshooting
+
+### Backend Not Starting
+- Ensure MongoDB is running: `systemctl status mongod`
+- Check if port 5000 is available: `lsof -i :5000`
+- Verify `.env` file exists with all required variables
+
+### "Groq AI service not available" Error
+- Ensure `GROQ_API_KEY` is set in `backend/.env`
+- Verify API key at https://console.groq.com/
+- Restart backend after adding the key
+- Check backend logs for initialization message
+
+### Resume Analysis Returns Generic Results
+- Backend logs should show: `✅ Groq AI client initialized successfully`
+- If showing fallback responses, check API key and quota
+- Watch backend console during analysis for error messages
+
+### Code Execution Failing
+- Verify Judge0 API key is valid
+- Check Judge0 API status
+- Ensure proper language ID is being sent
+
+### Frontend Not Connecting to Backend
+- Verify `VITE_BACKEND_URL` in `frontend/.env`
+- Check CORS settings in backend
+- Ensure both servers are running
+
 ## 🚧 Future Enhancements
 
 - [x] Voice interviews ✅
 - [x] AI Resume Builder ✅
+- [x] AI Resume Analysis & Improvement ✅
 - [x] LaTeX import/export ✅
+- [ ] PDF parsing for resume uploads
 - [ ] Video recording with facial analysis
 - [ ] Real-time collaboration on problems
 - [ ] Peer code review system

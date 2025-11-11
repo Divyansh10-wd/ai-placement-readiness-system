@@ -12,6 +12,7 @@ import AIInterview from './pages/AIInterview.jsx'
 import InterviewReport from './pages/InterviewReport.jsx'
 import Resumes from './pages/Resumes.jsx'
 import ResumeBuilder from './pages/ResumeBuilder.jsx'
+import ResumeAnalysis from './pages/ResumeAnalysis.jsx'
 import { useAuth } from './context/AuthContext.jsx'
 
 function ProtectedRoute({ children }) {
@@ -75,7 +76,7 @@ export default function App() {
             path="/resumes"
             element={
               <ProtectedRoute>
-                <Resumes />
+                <ResumeAnalysis />
               </ProtectedRoute>
             }
           />

@@ -1,6 +1,6 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import { Code2, Home, FileEdit, LayoutDashboard, MessageSquare, FileText, User, LogOut, Upload } from 'lucide-react';
+import { Code2, Home, FileEdit, LayoutDashboard, MessageSquare, FileText, User, LogOut } from 'lucide-react';
 
 export default function NavBar() {
   const { token, setToken, setUser, user } = useAuth();
@@ -45,10 +45,6 @@ export default function NavBar() {
               <FileEdit className="w-4 h-4" />
               <span>Create Problem</span>
             </NavLink>
-            <NavLink to="/bulk-publish" className={linkClass}>
-              <Upload className="w-4 h-4" />
-              <span>Bulk Upload</span>
-            </NavLink>
             <NavLink to="/dashboard" className={linkClass}>
               <LayoutDashboard className="w-4 h-4" />
               <span>Dashboard</span>
@@ -59,7 +55,7 @@ export default function NavBar() {
             </NavLink>
             <NavLink to="/resumes" className={linkClass}>
               <FileText className="w-4 h-4" />
-              <span>Resume Maker</span>
+              <span>Resume Analysis</span>
             </NavLink>
           </div>
 
